@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name         CourseCreatorPro video downloader
-// @namespace    https://courses.coursecreator.pro
+// @downloadURL  https://github.com/Lambik/ccp-downloader/raw/master/ccp-downloader.user.js
+// @namespace    https://github.com/Lambik/
 // @version      0.1
 // @description  Make all wistia videos downloadable
 // @author       You
