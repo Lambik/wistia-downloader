@@ -2,11 +2,14 @@
 // @name         Teachable video downloader
 // @downloadURL  https://github.com/Lambik/teachable-downloader/raw/master/teachable-downloader.user.js
 // @namespace    https://github.com/Lambik/
-// @version      0.2
+// @version      0.3
 // @description  Make all wistia videos downloadable on teachable courses
 // @author       You
+// @match        *://*.teachable.com/*
 // @match        *://courses.coursecreatorpro.com/*
 // @match        *://courses.fulltimefilmmaker.com/*
+// @match        *://courses.52kards.com/*
+// @match        *://howtofreedive.com/*
 // @connect      fast.wistia.net
 // @grant        GM_xmlhttpRequest
 // @run-at       document-end
