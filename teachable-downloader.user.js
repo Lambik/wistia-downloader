@@ -39,7 +39,7 @@
                     if (assets.length) {
                         let allvids = JSON.parse(assets[1]);
                         console.log(allvids);
-                        var newNode = document.createElement('div');
+                        let newNode = document.createElement('div');
                         let str = "<h4>Download options:</h4><ul>";
                         for (let vid of allvids) {
                             if (vid.type != 'hls_video' && vid.public) {
