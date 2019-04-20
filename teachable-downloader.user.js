@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Teachable video downloader
-// @downloadURL  https://github.com/Lambik/teachable-downloader/raw/master/teachable-downloader.user.js
+// @downloadURL  https://github.com/Lambik/wistia-downloader/raw/master/teachable-downloader.user.js
 // @namespace    https://github.com/Lambik/
 // @version      0.3
 // @description  Make all wistia videos downloadable on teachable courses
