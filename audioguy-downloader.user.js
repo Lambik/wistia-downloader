@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Audioguy.co video downloader
-// @downloadURL  https://github.com/Lambik/teachable-downloader/raw/master/audioguy-downloader.user.js
+// @downloadURL  https://github.com/Lambik/wistia-downloader/raw/master/audioguy-downloader.user.js
 // @namespace    https://github.com/Lambik/
 // @version      0.1
 // @description  Make all wistia videos downloadable on audioguy courses
