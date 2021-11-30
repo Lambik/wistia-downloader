@@ -15,6 +15,10 @@
 	'use strict';
 
 	function parseVideos() {
+		let filename = [...document.getElementById('user-site-course-content-container').getElementsByClassName('text-muted')].map((a) => a.text);
+		filename.push(document.title);
+		filename = filename.join(' - ').replace(/'/g, `'\\''`); // the replace makes it bash-friendly in case there are apostrophes
+
 		let viddivs = document.getElementsByClassName('wistia_embed');
 		console.log('Found ' + viddivs.length + ' wista video divs');
 
@@ -43,7 +47,7 @@
 							let str = "<h4>Download options:</h4><ul>";
 							for (let vid of allvids) {
 								if (vid.type != 'hls_video' && vid.public) {
-									str += '<li style="font-size: 1rem;">' + vid.display_name + ' (' + vid.width + 'x' + vid.height + ', ' + vid.ext + '): <a href="' + vid.url + '" target="_blank">' + formatBytes(vid.size) + '</a></li>';
+									str += '<li style="font-size: 1rem;">' + vid.display_name + ' (' + vid.width + 'x' + vid.height + ', ' + vid.ext + '): <a href="' + vid.url + '" target="_blank">' + formatBytes(vid.size) + '</a> <input type="text" value="wget -O \''+filename+'.mp4\' ' + vid.url + '" onfocus="this.select()"></li>';
 								}
 							}
 							str += "</ul>";
