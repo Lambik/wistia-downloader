@@ -3,7 +3,7 @@
 // @downloadURL  https://github.com/Lambik/wistia-downloader/raw/master/audioguy-downloader.user.js
 // @namespace    https://github.com/Lambik/
 // @version      0.1
-// @description  Make all wistia videos downloadable on audioguy courses
+// @description  Make all wistia videos downloadable on podia courses
 // @author       You
 // @match        *://*.podia.com/*
 // @connect      fast.wistia.net
@@ -15,9 +15,17 @@
 	'use strict';
 
 	function parseVideos() {
-		let filename = [...document.getElementById('user-site-course-content-container').getElementsByClassName('text-muted')].map((a) => a.text);
+		let filename = [...document.getElementById('user-site-course-content-container').getElementsByClassName('text-muted')]
+			.filter((a) => !a.classList.contains('comment-created-at'))
+			.map((a) => a.text);
 		filename.push(document.title);
-		filename = filename.join(' - ').replace(/'/g, `'\\''`); // the replace makes it bash-friendly in case there are apostrophes
+		filename = filename
+			.join(' - ')
+			.replace(/[\/\\]/g, '-') // replace slashes (to not create a path)
+			.replace(/"/g, "'") // replace double apostrophe to single
+			.replace(/'/g, `'\\''`) // the replace makes it bash-friendly in case there are apostrophes
+			.replace(/:/g, ' -') // replace colon (for windows)
+		;
 
 		let viddivs = document.getElementsByClassName('wistia_embed');
 		console.log('Found ' + viddivs.length + ' wista video divs');
@@ -47,7 +55,7 @@
 							let str = "<h4>Download options:</h4><ul>";
 							for (let vid of allvids) {
 								if (vid.type != 'hls_video' && vid.public) {
-									str += '<li style="font-size: 1rem;">' + vid.display_name + ' (' + vid.width + 'x' + vid.height + ', ' + vid.ext + '): <a href="' + vid.url + '" target="_blank">' + formatBytes(vid.size) + '</a> <input type="text" value="wget -O \''+filename+'.mp4\' ' + vid.url + '" onfocus="this.select()"></li>';
+									str += '<li style="font-size: 1.5rem;">' + vid.display_name + ' (' + vid.width + 'x' + vid.height + ', ' + vid.ext + '): <a href="' + vid.url + '" target="_blank">' + formatBytes(vid.size) + '</a> <input type="text" value="wget -O \''+filename+'.mp4\' ' + vid.url + '" onfocus="this.select()"></li>';
 								}
 							}
 							str += "</ul>";
@@ -62,6 +70,27 @@
 				}
 			);
 		}
+
+		let vimeoiframes = [...document.getElementsByTagName('iframe')].filter((ifr) => ifr.src.includes('vimeo'));
+		console.log('Found ' + vimeoiframes.length + ' vimeo video iframes');
+
+		for (let vimeoiframe of vimeoiframes) {
+			let newNode = document.createElement('div');
+			let str = "<h4>Download options:</h4>";
+			str += '<input type="text" value="youtube-dl -o \''+filename+'.%(ext)s\' ' + vimeoiframe.src + ' --referer ' + vimeoiframe.baseURI + '" onfocus="this.select()">';
+			newNode.innerHTML = str;
+			newNode.style.fontSize = 'auto';
+			vimeoiframe.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(newNode)
+		}
+	}
+
+	function cleanNavigation() {
+		[...document.getElementsByTagName('a')]
+			.filter((a) => a.dataset.remote == 'true')
+			.forEach((a) => {
+				a.dataset.remote = 'false';
+				a.dataset.action = '';
+			});
 	}
 
 	// thanks to https://stackoverflow.com/a/18650828/102720
@@ -80,4 +109,5 @@
 	}
 
 	parseVideos();
+	cleanNavigation();
 })();
